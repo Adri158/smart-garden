@@ -351,13 +351,14 @@ Kalau projek ini berguna buat kamu, atau sekadar pengen support — bantuan keci
 [![Star](https://img.shields.io/badge/⭐%20Kasih%20Star-Gratis%20kok!-f59e0b?style=for-the-badge)](https://github.com/Adri158/smart-garden/stargazers)
 [![Fork](https://img.shields.io/badge/🍴%20Fork%20Repo-Modif%20bebas-4ade80?style=for-the-badge)](https://github.com/Adri158/smart-garden/fork)
 [![Issues](https://img.shields.io/badge/🐛%20Laporin%20Bug-Buka%20Issue-60a5fa?style=for-the-badge)](https://github.com/Adri158/smart-garden/issues/new?template=bug_report.md&labels=bug)
-[![Feature Request](https://img.shields.io/badge/💡%20Request%20Fitur-Buka%20Issue-a78bfa?style=for-the-badge)](https://github.com/Adri158/smart-garden/issues/new?template=feature_request.md&labels=enhancement)
+[![Pull Request](https://img.shields.io/badge/💡%20Contribute%20Fitur-Buka%20PR-a78bfa?style=for-the-badge)](https://github.com/Adri158/smart-garden/compare)
 
 </div>
 
 > **⭐ Star** — bantu projek ini makin keliatan di GitHub search  
 > **🍴 Fork** — pengen modif buat projek sendiri? fork aja, bebas!  
-> **🐛 Issue** — nemuin bug atau mau request fitur? langsung buka [Issues](https://github.com/Adri158/smart-garden/issues) — semua masukan dibaca
+> **🐛 Issue** — nemuin bug? langsung buka [Issues](https://github.com/Adri158/smart-garden/issues)  
+> **💡 PR** — mau tambahin fitur? fork → implement → buka Pull Request
 
 ---
 
