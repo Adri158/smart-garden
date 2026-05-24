@@ -1,15 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#06080f"/>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f2a1a"/>
+      <stop offset="100%" stop-color="#06080f"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <!-- glow -->
+  <ellipse cx="256" cy="200" rx="180" ry="160" fill="url(#glow)"/>
+
+  <!-- pot -->
+  <path d="M188 370 L200 430 Q256 446 312 430 L324 370 Z" fill="#1e4d2b"/>
+  <path d="M182 358 Q182 370 188 370 L324 370 Q330 370 330 358 Q330 346 318 346 L194 346 Q182 346 182 358Z" fill="#22863a"/>
+
   <!-- stem -->
-  <rect x="248" y="260" width="16" height="140" rx="8" fill="#22c55e"/>
-  <!-- main leaf -->
-  <path d="M256 260 C256 260 170 220 160 140 C160 140 240 130 270 200 C270 200 300 130 360 140 C360 220 256 260 256 260Z" fill="#22c55e" opacity="0.9"/>
-  <!-- left small leaf -->
-  <path d="M248 310 C248 310 200 295 190 255 C190 255 235 248 248 285Z" fill="#22c55e" opacity="0.7"/>
-  <!-- right small leaf -->
-  <path d="M264 330 C264 330 310 310 325 268 C325 268 278 265 264 300Z" fill="#22c55e" opacity="0.7"/>
-  <!-- blue glow dot -->
-  <circle cx="256" cy="192" r="12" fill="#3b82f6" opacity="0.8"/>
-  <!-- soil base -->
-  <rect x="210" y="395" width="92" height="20" rx="10" fill="#3b82f6" opacity="0.4"/>
+  <rect x="248" y="220" width="16" height="130" rx="8" fill="#22c55e"/>
+
+  <!-- right branch leaf -->
+  <path d="M256 290 Q310 270 340 220 Q340 220 310 200 Q270 220 256 270Z" fill="#16a34a"/>
+  <path d="M256 285 Q310 265 340 215" stroke="#15803d" stroke-width="2" fill="none" opacity="0.5"/>
+
+  <!-- left branch leaf -->
+  <path d="M256 310 Q200 285 175 230 Q175 230 205 212 Q245 235 256 295Z" fill="#22c55e"/>
+  <path d="M256 305 Q200 280 175 225" stroke="#16a34a" stroke-width="2" fill="none" opacity="0.5"/>
+
+  <!-- top leaf -->
+  <path d="M256 220 Q220 160 230 100 Q256 90 282 100 Q292 160 256 220Z" fill="#16a34a"/>
+  <line x1="256" y1="215" x2="256" y2="108" stroke="#15803d" stroke-width="2" opacity="0.5"/>
+
+  <!-- IoT dot / sensor -->
+  <circle cx="256" cy="175" r="14" fill="#0d1117" opacity="0.6"/>
+  <circle cx="256" cy="175" r="8" fill="#3b82f6"/>
+  <circle cx="256" cy="175" r="4" fill="#93c5fd"/>
+
+  <!-- signal rings -->
+  <circle cx="256" cy="175" r="20" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.5"/>
+  <circle cx="256" cy="175" r="28" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
 </svg>
