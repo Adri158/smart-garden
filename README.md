@@ -8,11 +8,11 @@
 
 ---
 
-## Tentang Proyek
+## Tentang Projek ini
 
 Smart Garden adalah sistem IoT yang memantau kondisi kebun secara real-time dan mengontrol pompa penyiram tanaman secara otomatis. ESP32 membaca data sensor tanah, suhu, dan kelembaban udara, lalu mengirimkannya ke dashboard web melalui MQTT.
 
-Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal siram — semuanya dari browser, bahkan dari luar jaringan lokal.
+Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal siram. semuanya dari browser
 
 ---
 
@@ -20,13 +20,13 @@ Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal s
 
 | Fitur | Deskripsi |
 |-------|-----------|
-| 📊 **Real-time Monitoring** | Data sensor langsung dari ESP32 via MQTT WebSocket |
+| 📊 **Real-time Monitoring** | Data sensor langsung dari ESP32 lewat MQTT WebSocket |
 | 💧 **Kontrol Pompa** | Nyala/mati manual + mode AUTO berdasarkan kelembaban tanah |
-| 📈 **Grafik Historis** | Tren sensor dari 1 jam hingga 1 bulan |
+| 📈 **Grafik Historis** | HIstori sensor dari 1 jam hingga 1 bulan |
 | ⏰ **Jadwal Siram** | Atur hari & jam siram otomatis |
-| 🌤️ **Info Cuaca** | Prakiraan cuaca & peluang hujan via Open-Meteo |
+| 🌤️ **Info Cuaca** | Perkiraan cuaca & peluang hujan lewat Open-Meteo |
 | 🔧 **OTA Update** | Firmware ESP32 update otomatis tanpa kabel |
-| 🤖 **AI Assistant** | Tanya langsung tentang fitur dashboard |
+| 🤖 **AI Assistant** | Tanya langsung tentang fitur dashboard(pake api key) |
 
 ---
 
@@ -36,14 +36,14 @@ Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal s
 ESP32 (Firmware)
   ├── DHT11       → Suhu udara & kelembaban
   ├── DS18B20     → Suhu air
-  ├── Soil Sensor → Kelembaban tanah (ADC)
-  └── Relay       → Pompa air (pin 27)
+  ├── Soil Sensor → Kelembaban tanah
+  └── Relay       → Pompa air
        │
-       └── MQTT TCP (LAN) → Mosquitto Broker
+       └── MQTT TCP → Mosquitto Broker
                 │
-                ├── mqttSave.js     → MariaDB (logging)
-                ├── serverStats.js  → CPU/RAM/Disk metrics
-                └── React Frontend  → WSS (via Cloudflare Tunnel)
+                ├── mqttSave.js     → MariaDB (Histori)
+                ├── serverStats.js  → CPU/RAM/Disk metrik
+                └── React Frontend  → WSS (lewat Cloudflare Tunnel)
 ```
 
 ---
@@ -51,7 +51,7 @@ ESP32 (Firmware)
 ## Tech Stack
 
 **Firmware**
-- ESP32 + Arduino Framework
+- ESP32 + Arduino IDE
 - DHT11, DS18B20, PubSubClient, ArduinoJson, WiFiManager, HTTPUpdate
 
 **Backend**
@@ -69,7 +69,7 @@ ESP32 (Firmware)
 **Infrastruktur**
 - Apache (reverse proxy + SPA serving)
 - Cloudflare Tunnel (HTTPS tanpa port forwarding)
-- Arch Linux
+- Arch Linux(OS Server)
 
 ---
 
@@ -90,7 +90,7 @@ smart-garden/
 
 ---
 
-## Cara Jalanin (Development)
+## Cara ngejalaninnya
 
 ### Frontend
 ```bash
@@ -119,25 +119,11 @@ php artisan serve      # :8000
 
 ---
 
-## Tim Pengembang — Kelompok 6
+## Pengembang
 
-| No | Nama | Peran |
-|----|------|-------|
-| 1 | Untung Adriansyah | Hardware, Software, Frontend, Backend, Testing |
-| 2 | Muh Rehan | Hardware |
-| 3 | Andi Muhammad Ghofur Irvan | Hardware |
-| 4 | Shirefa Seni | Hardware |
-| 5 | Anindiya Ainun Mahya | Hardware, Testing, Dokumentasi |
-| 6 | Nanda Saskia Putri | Hardware, Testing, Dokumentasi |
-| 7 | Jihan Dzakira Talita | Hardware, Testing, Dokumentasi |
-| 8 | Zahra Zikra | Hardware, Testing, Dokumentasi |
-| 9 | Ibrahim Munir | Hardware, Testing |
-| 10 | Muh. Alif Attar Maulana | Hardware, Testing |
-| 11 | Muh. Rifky Al-Aqsha | Hardware, Testing |
-
-**Guru Pembimbing:**
-- Ir. Runal Rezkiawan B., S.Kom., M.T.
-- Arfi Mesrach Hapaiduka, S. Pd.
+| No | Nama |
+|----|------|
+| 1 | Untung Adriansyah  |
 
 ---
 
