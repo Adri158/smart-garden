@@ -344,9 +344,22 @@ sudo systemctl status cloudflared
 
 ## Thanks to
 
-| No | Nama |
+| No | Untuk |
 |----|------|
-| 1 | Untung Adriansyah |
+| 1 | My Brain |
+| 2 | My Head |
+| 3 | My Eyes |
+| 4 | My Ears |
+| 5 | My Heart |
+| 6 | My Noise |
+| 7 | My Mouth |
+| 8 | My Hand |
+| 9 | My Stomach |
+| 10 | My Feet |
+| 11 | Untung Adriansyah |
+| 12 | Adri |
+| 13 | Adriansyah |
+| 14 | Rin |
 
 ---
 
