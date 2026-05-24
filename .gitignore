@@ -47,8 +47,7 @@ firmware/*.bin
 backup/
 
 # ── Bruno (API client) ────────────────────────────────────────────────────────
-bruno/environments/*.local.bru
-bruno/.env
+bruno/
 
 # ── Claude / AI tooling ───────────────────────────────────────────────────────
 CLAUDE.md
