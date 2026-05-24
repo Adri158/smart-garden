@@ -92,29 +92,76 @@ smart-garden/
 
 ## Cara ngejalaninnya
 
-### Frontend
+> **Catatan:** Proyek ini butuh setup infrastruktur lengkap sebelum bisa jalan — Apache, MariaDB, Mosquitto, Node.js, PHP, dan pm2 harus diinstall dulu di server. Hardware ESP32 juga harus ada dan di-flash firmwarenya.
+
+### Panduan Syntax (untuk yang baru)
+
+Semua perintah di bawah dijalankan di **Terminal** (Command Prompt / PowerShell di Windows, Terminal di Mac/Linux).
+
+| Perintah | Artinya |
+|----------|---------|
+| `cd nama-folder` | masuk ke folder |
+| `cp file.contoh file.baru` | duplikat file (untuk buat `.env`) |
+| `npm install` | download semua package yang dibutuhkan |
+| `npm run build` | compile kode frontend jadi file siap pakai |
+| `npm run dev` | jalanin server development (untuk testing lokal) |
+| `composer install` | download semua package PHP |
+| `php artisan ...` | perintah bawaan Laravel |
+| `pm2 startOrReload ...` | jalanin/reload proses Node.js di background |
+
+> File `.env` berisi konfigurasi rahasia (password DB, API key, dll) — **jangan di-share atau di-upload ke GitHub**.
+
+---
+
+### Prerequisites
+- Node.js + npm → [nodejs.org](https://nodejs.org)
+- PHP 8.x + Composer → [php.net](https://php.net) & [getcomposer.org](https://getcomposer.org)
+- MariaDB → [mariadb.org](https://mariadb.org)
+- Mosquitto MQTT Broker → [mosquitto.org](https://mosquitto.org)
+- Apache (dengan mod_proxy)
+- pm2 → `npm install -g pm2`
+
+### 1. Clone Repo
 ```bash
-cd frontend
-cp .env.example .env   # isi VITE_API_BASE, VITE_MQTT_URL, VITE_API_KEY
-npm install
-npm run dev            # dev server :5173
-npm run build          # build ke dist/
+git clone https://github.com/Adri158/smart-garden.git
+cd smart-garden
 ```
 
-### Backend (Node.js)
+### 2. Frontend
+```bash
+cd frontend
+cp .env.example .env
+```
+Buka file `.env` yang baru dibuat, isi nilainya sesuai setup kamu, lalu:
+```bash
+npm install
+npm run build
+```
+
+### 3. Backend (Node.js)
 ```bash
 cd backend
+cp .env.example .env
+```
+Isi file `.env` dengan kredensial database dan API key kamu, lalu:
+```bash
 npm install
 pm2 startOrReload ecosystem.config.js --update-env
 ```
 
-### Backend (Laravel)
+### 4. Setup Database
+```bash
+mysql -u root -p < database/schema.sql
+```
+Atau import file `database/schema.sql` lewat phpMyAdmin / DBeaver / MySQL Workbench.
+
+### 5. Backend (Laravel)
 ```bash
 cd laravel
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan serve      # :8000
+php artisan serve
 ```
 
 ---

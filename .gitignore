@@ -36,9 +36,11 @@ img/anggota/
 WhatsApp*
 
 # ── Database ───────────────────────────────────────────────────────────────────
-*.sql
 *.sqlite
 *.db
+# Exclude SQL dumps tapi bukan schema
+*.dump.sql
+smartgarden.sql
 
 # ── Firmware binaries ──────────────────────────────────────────────────────────
 firmware/*.bin
