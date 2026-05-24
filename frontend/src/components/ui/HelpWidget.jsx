@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { API_BASE } from '../../utils/constants';
+import { useAuth } from '../../context/AuthContext';
+
+const isPWA = window.matchMedia('(display-mode: standalone)').matches
+           || window.navigator.standalone === true;
 
 const PAGE_HELP = {
   '/dashboard': {
@@ -97,6 +101,7 @@ const DEFAULT_HELP = {
 
 export default function HelpWidget() {
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
   const [open, setOpen]             = useState(false);
   const [tab, setTab]               = useState('info');
   const [messages, setMessages]     = useState([]);
@@ -137,6 +142,8 @@ export default function HelpWidget() {
         body:    JSON.stringify({
           messages: newMsgs.map(({ role, content }) => ({ role, content })),
           page: pageKey,
+          isAdmin: isAuthenticated,
+          isPWA,
         }),
       });
 

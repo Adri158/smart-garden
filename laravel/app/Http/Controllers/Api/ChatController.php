@@ -10,7 +10,13 @@ class ChatController extends ApiController
     private const RATE_LIMIT_MAX    = 20;
     private const RATE_LIMIT_WINDOW = 60;
 
-    private const SYSTEM = "Kamu adalah asisten di Smart Garden Dashboard — sistem IoT monitoring dan kontrol kebun otomatis.\n\nSistem terdiri dari:\n- ESP32: sensor DHT11 (suhu/kelembaban udara), DS18B20 (suhu air), kelembaban tanah (ADC), relay pompa\n- MQTT broker Mosquitto untuk komunikasi real-time\n- Laravel REST API + MariaDB untuk penyimpanan histori sensor\n- React frontend dengan monitoring real-time via MQTT WebSocket\n\nCara menjawab:\n- Santai, pakai bahasa Indonesia\n- Jawab MAKSIMAL 4 baris, langsung ke inti, no basa-basi\n- Fokus membantu user memahami halaman yang sedang mereka buka";
+    private const SYSTEM_BASE = "Kamu asisten Smart Garden Dashboard — IoT monitoring kebun otomatis.\nATURAN KERAS: jawab MAKSIMAL 2-3 baris, langsung ke inti, ZERO basa-basi, no salam, no terima kasih. Bahasa Indonesia santai.";
+
+    private const SYSTEM_ADMIN = "\nKamu bicara dengan ADMIN. Boleh teknikal: MQTT topics, DB schema, konfigurasi server, pm2, backend Node.js, Laravel, Apache. Langsung ke detail teknis.";
+
+    private const SYSTEM_USER = "\nKamu bicara dengan USER BIASA. Fokus cara pakai fitur, hindari jargon teknis. Kalau ada istilah teknis, jelaskan singkat.";
+
+    private const SYSTEM_PWA = "\nUser buka via PWA (installed app), bukan browser biasa.";
 
     private const PAGE_CTX = [
         'dashboard'     => 'User di halaman Dashboard: monitor sensor real-time (soil, suhu, kelembaban), kontrol pompa & mode AUTO/MANUAL, grafik historis, info cuaca.',
@@ -35,6 +41,8 @@ class ChatController extends ApiController
 
         $messages = $request->input('messages', []);
         $page     = $request->input('page', '');
+        $isAdmin  = (bool) $request->input('isAdmin', false);
+        $isPWA    = (bool) $request->input('isPWA', false);
 
         if (!is_array($messages) || empty($messages)) {
             return $this->fail('messages wajib diisi');
@@ -45,9 +53,13 @@ class ChatController extends ApiController
             return $this->fail('Chat tidak tersedia', 503);
         }
 
-        $pageKey       = ltrim($page, '/');
-        $pageCtx       = self::PAGE_CTX[$pageKey] ?? '';
-        $systemContent = self::SYSTEM . ($pageCtx ? "\n\n{$pageCtx}" : '');
+        $pageKey = ltrim($page, '/');
+        $pageCtx = self::PAGE_CTX[$pageKey] ?? '';
+
+        $systemContent = self::SYSTEM_BASE;
+        $systemContent .= $isAdmin ? self::SYSTEM_ADMIN : self::SYSTEM_USER;
+        if ($isPWA) $systemContent .= self::SYSTEM_PWA;
+        if ($pageCtx) $systemContent .= "\n\nKonteks: {$pageCtx}";
 
         $body = json_encode([
             'model'      => 'gpt-4o-mini',
