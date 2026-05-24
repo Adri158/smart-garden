@@ -1,7 +1,8 @@
 # ── Environment & secrets ──────────────────────────────────────────────────────
 .env
 .env.*
-.env.example
+!.env.example
+!**/.env.example
 backend/.env
 frontend/.env
 laravel/.env

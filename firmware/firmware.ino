@@ -204,7 +204,7 @@ void checkForUpdate() {
   String newVersion = doc["version"].as<String>();
   String firmwareURL= doc["url"].as<String>();
 
-  if (newVersion != CURRENT_VERSION) {
+  if (isNewerVersion(newVersion, CURRENT_VERSION)) {
     client.publish(("smartgarden/" + deviceID + "/terminal/output").c_str(), "Updating firmware...");
     httpUpdate.update(clientSecure, firmwareURL);
   } else {
@@ -467,6 +467,16 @@ void readSensor() {
   lcd.print(autoMode   ? "A" : "M");
 }
 
+
+bool isNewerVersion(String newVer, String curVer) {
+  int nMaj = 0, nMin = 0, nPat = 0;
+  int cMaj = 0, cMin = 0, cPat = 0;
+  sscanf(newVer.c_str(), "%d.%d.%d", &nMaj, &nMin, &nPat);
+  sscanf(curVer.c_str(), "%d.%d.%d", &cMaj, &cMin, &cPat);
+  if (nMaj != cMaj) return nMaj > cMaj;
+  if (nMin != cMin) return nMin > cMin;
+  return nPat > cPat;
+}
 
 void setup() {
   Serial.begin(115200);

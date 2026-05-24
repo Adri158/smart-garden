@@ -7,6 +7,7 @@ const schedulesRouter    = require('./schedules');
 const serverRouter       = require('./server');
 const dokumentasiRouter  = require('./dokumentasi');
 const chatRouter         = require('./chat');
+const waktuRouter        = require('./waktu');
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use('/schedules',    schedulesRouter);
 router.use('/server',       serverRouter);
 router.use('/dokumentasi',  dokumentasiRouter);
 router.use('/chat',         chatRouter);
+router.use(waktuRouter);
 
 module.exports = router;
