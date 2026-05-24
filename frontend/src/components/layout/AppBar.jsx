@@ -176,7 +176,13 @@ export default function AppBar() {
       </div>
 
 
-      <div className={`overlay${open ? ' active' : ''}`} onClick={close} />
+      <div
+        className={`overlay${open ? ' active' : ''}`}
+        onClick={close}
+        onTouchEnd={e => { e.preventDefault(); close(); }}
+        role="presentation"
+        aria-hidden="true"
+      />
     </>
   );
 }

@@ -1,8 +1,20 @@
+button:where(.file-card),
+button:where(.file-row) {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .doc-root {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow: hidden;
 }
 
 .doc-toolbar {
@@ -146,11 +158,7 @@
 
 .file-grid,
 .file-list {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 16px 20px 48px;
+  padding: 16px 20px 90px;
   scrollbar-width: thin;
   scrollbar-color: rgba(59,130,246,0.25) transparent;
 }
@@ -435,6 +443,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 500;
   display: flex;
   align-items: center;
@@ -784,15 +793,14 @@
 
 @media (max-width: 768px) {
   .filter-bar  { padding: 8px 14px; }
-  .file-grid   { padding: 12px 14px 40px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); column-gap: 12px; row-gap: 24px; }
-  .file-list   { padding: 8px 14px 40px; }
+  .file-grid   { padding: 12px 14px 100px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); column-gap: 12px; row-gap: 24px; }
+  .file-list   { padding: 8px 14px 100px; }
   .list-head   { display: none; }
   .file-row    { grid-template-columns: 34px 1fr 68px; }
   .row-type, .row-date { display: none; }
-  .pv-panel    { width: 96vw; }
-  .pv-nav--prev { left: 6px; }
-  .pv-nav--next { right: 6px; }
-  .pv-bar-name  { max-width: 180px; }
+  .pv-panel    { width: 96vw; max-height: 88dvh; max-height: 88vh; }
+  .pv-bar-name { max-width: 160px; }
+  .vid-el      { max-height: 45dvh; max-height: 45vh; }
 }
 
 @media (max-width: 600px) {
@@ -821,7 +829,7 @@
 
   .file-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    padding: 10px 12px 40px;
+    padding: 10px 12px 90px;
     column-gap: 10px;
     row-gap: 20px;
   }

@@ -20,7 +20,8 @@ export function useSensor(deviceId) {
 
   useEffect(() => {
     if (!deviceId) return;
-    dispatch(fetchSensorHistory({ deviceId, sensor: historySensor, range: historyRange }));
+    const promise = dispatch(fetchSensorHistory({ deviceId, sensor: historySensor, range: historyRange }));
+    return () => promise.abort();
   }, [deviceId, historySensor, historyRange, dispatch]);
 
   return {

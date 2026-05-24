@@ -296,6 +296,8 @@ body::after {
 .overlay.active {
   opacity: 1;
   pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -394,6 +396,7 @@ button:hover {
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
+  pointer-events: none;
 }
 
 .hw-btn {
@@ -411,6 +414,7 @@ button:hover {
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
   flex-shrink: 0;
+  pointer-events: auto;
 }
 .hw-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(59, 130, 246, 0.55); background: var(--blue); color: #fff; }
 .hw-btn.hw-btn-open { background: var(--raise); border: 1px solid var(--border); color: var(--muted); box-shadow: none; }

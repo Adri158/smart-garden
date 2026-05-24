@@ -16,9 +16,9 @@ export const getLatestSensor = (deviceId) =>
       return d;
     });
 
-export const getSensorHistory = (deviceId, sensor = 'soil', range = '24h') =>
+export const getSensorHistory = (deviceId, sensor = 'soil', range = '24h', signal) =>
   api
-    .get(`/api/devices/${deviceId}/sensors`, { params: { sensor, range } })
+    .get(`/api/devices/${deviceId}/sensors`, { params: { sensor, range }, signal })
     .then((r) => {
       const d = r.data.data ?? r.data;
       if (d && Array.isArray(d.labels) && Array.isArray(d.values)) {

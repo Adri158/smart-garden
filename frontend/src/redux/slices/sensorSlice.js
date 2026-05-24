@@ -14,9 +14,9 @@ export const fetchLatestSensor = createAsyncThunk(
 
 export const fetchSensorHistory = createAsyncThunk(
   'sensor/fetchHistory',
-  async ({ deviceId, sensor, range }, { rejectWithValue }) => {
+  async ({ deviceId, sensor, range }, { rejectWithValue, signal }) => {
     try {
-      const data = await getSensorHistory(deviceId, sensor, range);
+      const data = await getSensorHistory(deviceId, sensor, range, signal);
       return { sensor, range, data };
     } catch (err) {
       return rejectWithValue(err.message);
@@ -101,12 +101,13 @@ const sensorSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchSensorHistory.fulfilled, (state, action) => {
+        const { sensor, range, data } = action.payload;
+        if (sensor !== state.historySensor || range !== state.historyRange) return;
         state.historyLoading = false;
-        state.history = action.payload.data;
-        state.historySensor = action.payload.sensor;
-        state.historyRange = action.payload.range;
+        state.history = data;
       })
       .addCase(fetchSensorHistory.rejected, (state, action) => {
+        if (action.meta.aborted) return;
         state.historyLoading = false;
         state.error = action.payload;
       });

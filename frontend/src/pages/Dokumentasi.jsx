@@ -58,6 +58,18 @@ export default function Dokumentasi() {
 
   const previewFile = preview != null ? files[preview] : null;
 
+
+  const swipeRef = useRef({ x: 0, active: false });
+  function onTouchStart(e) { swipeRef.current = { x: e.touches[0].clientX, active: true }; }
+  function onTouchEnd(e) {
+    if (!swipeRef.current.active) return;
+    const dx = e.changedTouches[0].clientX - swipeRef.current.x;
+    swipeRef.current.active = false;
+    if (Math.abs(dx) < 50) return;
+    if (dx < 0) shiftPreview(1);
+    else shiftPreview(-1);
+  }
+
   return (
     <main className="main-content" style={{ padding: 0 }}>
       <div className="doc-root">
@@ -122,11 +134,11 @@ export default function Dokumentasi() {
               </div>
             ) : (
               visibleIndices.map(({ f, idx }) => (
-                <div
+                <button
                   key={idx}
                   className="file-card"
+                  type="button"
                   onClick={() => openPreview(idx)}
-                  style={{ cursor: 'pointer', touchAction: 'manipulation' }}
                 >
                   <div className={`card-thumb thumb--${f.type}`}>
                     {f.type === 'image' && (
@@ -147,7 +159,7 @@ export default function Dokumentasi() {
                     <span className="card-name" title={f.name}>{f.name}</span>
                     <span className="card-meta">{f.sizeH} &middot; {f.date}</span>
                   </div>
-                </div>
+                </button>
               ))
             )}
           </div>
@@ -169,7 +181,7 @@ export default function Dokumentasi() {
               </div>
             ) : (
               visibleIndices.map(({ f, idx }) => (
-                <div key={idx} className="file-row" onClick={() => openPreview(idx)} style={{ cursor: 'pointer', touchAction: 'manipulation' }}>
+                <button key={idx} className="file-row" type="button" onClick={() => openPreview(idx)}>
                   <div className={`row-ico ico--${f.type}`}>
                     <i className={`fa ${f.type === 'image' ? 'fa-image' : 'fa-film'}`} />
                   </div>
@@ -177,7 +189,7 @@ export default function Dokumentasi() {
                   <span className="row-type">{f.type === 'image' ? 'Gambar' : 'Video'}</span>
                   <span className="row-size">{f.sizeH}</span>
                   <span className="row-date">{f.date}</span>
-                </div>
+                </button>
               ))
             )}
           </div>
@@ -196,7 +208,7 @@ export default function Dokumentasi() {
             <i className="fa fa-chevron-right" />
           </button>
 
-          <div className="pv-panel">
+          <div className="pv-panel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
             <div className="pv-bar">
               <div className="pv-bar-left">
                 <div className={`pv-bar-icon pv-icon--${previewFile.type}`}>
@@ -222,10 +234,10 @@ export default function Dokumentasi() {
 
             <div className="pv-body">
               {previewFile.type === 'image' && (
-                <PinchZoomImg src={srcUrl(previewFile.src)} alt={previewFile.name} />
+                <PinchZoomImg key={srcUrl(previewFile.src)} src={srcUrl(previewFile.src)} alt={previewFile.name} />
               )}
               {previewFile.type === 'video' && (
-                <VideoPlayer src={srcUrl(previewFile.src)} />
+                <VideoPlayer key={srcUrl(previewFile.src)} src={srcUrl(previewFile.src)} />
               )}
             </div>
           </div>
