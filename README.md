@@ -12,7 +12,7 @@
 
 Smart Garden adalah sistem IoT yang memantau kondisi kebun secara real-time dan mengontrol pompa penyiram tanaman secara otomatis. ESP32 membaca data sensor tanah, suhu, dan kelembaban udara, lalu mengirimkannya ke dashboard web melalui MQTT.
 
-Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal siram. semuanya dari browser
+Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal siram — semuanya dari browser.
 
 ---
 
@@ -22,11 +22,11 @@ Pengguna bisa memantau sensor, mengontrol pompa, dan mengatur threshold/jadwal s
 |-------|-----------|
 | 📊 **Real-time Monitoring** | Data sensor langsung dari ESP32 lewat MQTT WebSocket |
 | 💧 **Kontrol Pompa** | Nyala/mati manual + mode AUTO berdasarkan kelembaban tanah |
-| 📈 **Grafik Historis** | HIstori sensor dari 1 jam hingga 1 bulan |
+| 📈 **Grafik Historis** | Histori sensor dari 1 jam hingga 1 bulan |
 | ⏰ **Jadwal Siram** | Atur hari & jam siram otomatis |
 | 🌤️ **Info Cuaca** | Perkiraan cuaca & peluang hujan lewat Open-Meteo |
 | 🔧 **OTA Update** | Firmware ESP32 update otomatis tanpa kabel |
-| 🤖 **AI Assistant** | Tanya langsung tentang fitur dashboard(pake api key) |
+| 🤖 **AI Assistant** | Tanya langsung tentang fitur dashboard |
 
 ---
 
@@ -69,7 +69,7 @@ ESP32 (Firmware)
 **Infrastruktur**
 - Apache (reverse proxy + SPA serving)
 - Cloudflare Tunnel (HTTPS tanpa port forwarding)
-- Arch Linux(OS Server)
+- Linux (OS Server)
 
 ---
 
@@ -77,7 +77,7 @@ ESP32 (Firmware)
 
 ```
 smart-garden/
-├── firmware/          # Kode Arduino ESP32 (ini.ino)
+├── firmware/          # Kode Arduino ESP32
 ├── frontend/          # React SPA (Vite)
 │   └── src/
 │       ├── pages/     # Dashboard, Settings, Sistem, dll
@@ -85,7 +85,7 @@ smart-garden/
 │       └── components/
 ├── backend/           # Node.js REST API + MQTT jobs
 ├── laravel/           # Laravel API layer
-└── database/          # Migrasi & schema
+└── database/          # Schema SQL
 ```
 
 ---
@@ -127,16 +127,11 @@ git clone https://github.com/Adri158/smart-garden.git
 cd smart-garden
 ```
 
-### 2. Frontend
+### 2. Setup Database
 ```bash
-cd frontend
-cp .env.example .env
+mysql -u root -p < database/schema.sql
 ```
-Buka file `.env` yang baru dibuat, isi nilainya sesuai setup kamu, lalu:
-```bash
-npm install
-npm run build
-```
+Atau import file `database/schema.sql` lewat phpMyAdmin / DBeaver / MySQL Workbench.
 
 ### 3. Backend (Node.js)
 ```bash
@@ -149,13 +144,7 @@ npm install
 pm2 startOrReload ecosystem.config.js --update-env
 ```
 
-### 4. Setup Database
-```bash
-mysql -u root -p < database/schema.sql
-```
-Atau import file `database/schema.sql` lewat phpMyAdmin / DBeaver / MySQL Workbench.
-
-### 5. Backend (Laravel)
+### 4. Backend (Laravel)
 ```bash
 cd laravel
 composer install
@@ -164,13 +153,100 @@ php artisan key:generate
 php artisan serve
 ```
 
+### 5. Frontend
+```bash
+cd frontend
+cp .env.example .env
+```
+Buka file `.env` yang baru dibuat, isi nilainya sesuai setup kamu, lalu:
+```bash
+npm install
+npm run build
+```
+
 ---
 
-## Pengembang
+## Setup Cloudflare Tunnel (Akses Publik)
 
-| No | Nama |
-|----|------|
-| 1 | Untung Adriansyah  |
+Cloudflare Tunnel memungkinkan dashboar diakses dari internet tanpa perlu port forwarding atau IP publik.
+
+### 1. Install cloudflared
+
+**Linux (Debian/Ubuntu):**
+```bash
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o cloudflared.deb
+sudo dpkg -i cloudflared.deb
+```
+
+**Arch Linux:**
+```bash
+yay -S cloudflared
+```
+
+**Windows / Mac:** download di [developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+
+### 2. Login & Buat Tunnel
+
+```bash
+cloudflared tunnel login
+cloudflared tunnel create smart-garden
+```
+
+Setelah buat tunnel, kamu akan dapat **Tunnel ID** — catat, dibutuhkan di langkah berikutnya.
+
+### 3. Buat File Konfigurasi
+
+Buat file `/etc/cloudflared/config.yml`:
+
+```yaml
+tunnel: <TUNNEL-ID-KAMU>
+credentials-file: /root/.cloudflared/<TUNNEL-ID-KAMU>.json
+
+ingress:
+  - hostname: domainkamu.com
+    service: http://localhost:80
+
+  - hostname: api.domainkamu.com
+    service: http://localhost:3000
+
+  - hostname: mqtt.domainkamu.com
+    service: ws://localhost:9002
+
+  - service: http_status:404
+```
+
+### 4. Tambah DNS di Cloudflare Dashboard
+
+Buka **Cloudflare Dashboard → DNS → Add Record** untuk setiap subdomain:
+
+| Type | Name | Target |
+|------|------|--------|
+| CNAME | `@` (atau nama domain) | `<TUNNEL-ID>.cfargotunnel.com` |
+| CNAME | `api` | `<TUNNEL-ID>.cfargotunnel.com` |
+| CNAME | `mqtt` | `<TUNNEL-ID>.cfargotunnel.com` |
+
+> Pastikan **Proxy status = Proxied** (ikon awan oranye aktif).
+
+### 5. Jalanin sebagai Service
+
+```bash
+sudo cloudflared service install
+sudo systemctl enable cloudflared
+sudo systemctl start cloudflared
+```
+
+Cek status:
+```bash
+sudo systemctl status cloudflared
+```
+
+### Subdomain yang Dipakai
+
+| Subdomain | Tujuan | Keterangan |
+|-----------|--------|------------|
+| `domainkamu.com` | Frontend (React) | Dashboard utama |
+| `api.domainkamu.com` | REST API (Node.js :3000) | Endpoint data sensor |
+| `mqtt.domainkamu.com` | MQTT WebSocket (:9002) | Koneksi real-time browser |
 
 ---
 
@@ -188,6 +264,14 @@ php artisan serve
 | `smartgarden/{id}/control/mode` | Browser → ESP | Ganti mode |
 | `smartgarden/{id}/config` | Browser → ESP | Threshold (JSON) |
 | `smartgarden/{id}/schedules` | Browser → ESP | Jadwal siram (JSON) |
+
+---
+
+## Pengembang
+
+| No | Nama |
+|----|------|
+| 1 | Untung Adriansyah |
 
 ---
 
