@@ -342,7 +342,7 @@ sudo systemctl status cloudflared
 
 ---
 
-## Pengembang
+## Thanks to
 
 | No | Nama |
 |----|------|

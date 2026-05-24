@@ -17,7 +17,9 @@
 #include <ESPmDNS.h>
 #include <time.h>
 
-const char* mqtt_server = "rin-adri.local";
+const char* mqtt_server  = "SERVER-IP-ATAU-HOSTNAME";
+const char* ota_url      = "https://domainkamu.com/firmware/version.json";
+const char* ap_password  = "password-ap-wifi";
 
 WiFiClient   espClient;
 PubSubClient client(espClient);
@@ -180,7 +182,7 @@ void checkForUpdate() {
   clientSecure.setInsecure();
 
   HTTPClient https;
-  https.begin(clientSecure, "https://kelompok6.my.id/firmware/version.json");
+  https.begin(clientSecure, ota_url);
 
   int httpCode = https.GET();
 
@@ -482,7 +484,7 @@ void setup() {
   dht.begin();
   ds18b20.begin();
 
-  bool res = wm.autoConnect("Penyiram tanaman otomatis", "adriadriadri");
+  bool res = wm.autoConnect("Penyiram tanaman otomatis", ap_password);
   if (!res) ESP.restart();
 
   String mac = WiFi.macAddress();
