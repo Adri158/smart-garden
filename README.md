@@ -90,7 +90,82 @@ smart-garden/
 
 ---
 
-## Cara ngejalaninnya
+## Setup Lokal (Development)
+
+Cara paling cepat buat nyobain di laptop sendiri tanpa server atau Cloudflare.
+
+### Prerequisites Lokal
+- Node.js + npm
+- PHP 8.x + Composer
+- MariaDB
+- Mosquitto MQTT Broker
+
+### 1. Clone & Setup Database
+```bash
+git clone https://github.com/Adri158/smart-garden.git
+cd smart-garden
+mysql -u root -p < database/schema.sql
+```
+
+### 2. Backend (Node.js)
+```bash
+cd backend
+cp .env.example .env
+```
+Isi `.env` dengan DB credentials kamu, lalu:
+```bash
+npm install
+node server.js
+```
+Backend jalan di `http://localhost:3000`.
+
+### 3. Backend (Laravel)
+```bash
+cd laravel
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan serve
+```
+
+### 4. Mosquitto (MQTT Broker)
+Pastikan Mosquitto jalan dengan WebSocket di port 9002. Edit config Mosquitto (`/etc/mosquitto/mosquitto.conf` atau sesuai OS):
+```
+listener 1883
+listener 9002
+protocol websockets
+allow_anonymous true
+```
+Restart Mosquitto setelah edit config.
+
+### 5. Frontend
+```bash
+cd frontend
+cp .env.example .env
+```
+Edit `.env` untuk lokal:
+```env
+VITE_API_BASE=http://localhost:3000
+VITE_MQTT_URL=ws://localhost:9002
+VITE_API_KEY=isi_api_key_kamu
+```
+Lalu:
+```bash
+npm install
+npm run dev
+```
+Buka `http://localhost:5173` di browser.
+
+### 6. ESP32 (opsional)
+Ubah `mqtt_server` di `firmware/firmware.ino` ke IP laptop kamu di jaringan lokal (cek dengan `ipconfig` / `ifconfig`):
+```cpp
+const char* mqtt_server = "192.168.x.x";
+```
+Flash ke ESP32, pastikan ESP32 dan laptop satu jaringan WiFi.
+
+---
+
+## Cara ngejalaninnya (Production/Server)
 
 > **Catatan:** Projek ini butuh setup infrastruktur lengkap sebelum bisa jalan, Apache, MariaDB, Mosquitto, Node.js, PHP, dan pm2 harus diinstall dulu di server. Hardware ESP32 juga harus ada dan di-flash firmwarenya, jika ingin kode sketch esp32 nya, ditunggu aja yah.
 
