@@ -1,22 +1,22 @@
 import '../styles/tentang.css';
 
 const MEMBERS = [
-  ["Untung Adriansyah",           "Hardware, Software, Frontend, Backend, Testing"],
-  ["Muh Rehan",                   "Hardware"],
-  ["Andi Muhammad Ghofur Irvan",  "Hardware"],
-  ["Shirefa Seni",                "Hardware"],
-  ["Anindiya Ainun Mahya",        "Hardware, Testing, Dokumentasi"],
-  ["Nanda Saskia Putri",          "Hardware, Testing, Dokumentasi"],
-  ["Jihan Dzakira Talita",        "Hardware, Testing, Dokumentasi"],
-  ["Zahra Zikra",                 "Hardware, Testing, Dokumentasi"],
-  ["Ibrahim Munir",               "Hardware, Testing"],
-  ["Muh. Alif Attar Maulana",    "Hardware, Testing"],
-  ["Muh. Rifky Al-Aqsha",        "Hardware, Testing"],
+  ["Nama anggota",           "ROLE"],
+  ["Nama anggota",                   "ROLE"],
+  ["Nama anggota",  "ROLE"],
+  ["Nama anggota",                "ROLE"],
+  ["Nama anggota",        "ROLE"],
+  ["Nama anggota",          "ROLE"],
+  ["Nama anggota",        "ROLE"],
+  ["Nama anggota",                 "ROLE"],
+  ["Nama anggota",               "ROLE"],
+  ["Nama anggota",    "ROLE"],
+  ["Nama anggota",        "ROLE"],
 ];
 
 const TEACHERS = [
-  ["Ir. Runal Rezkiawan B., S.Kom., M.T.", "Guru Pembimbing"],
-  ["Arfi Mesrach Hapaiduka, S. Pd.",       "Guru Pembimbing"],
+  ["Nama Pembimbing", "Guru Pembimbing"],
+  ["Nama Pembimbing",       "Guru Pembimbing"],
 ];
 
 function roleClass(r) {
