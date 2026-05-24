@@ -312,6 +312,7 @@ function VideoPlayer({ src }) {
   const vidRef   = useRef(null);
   const progRef  = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [muted,   setMuted]   = useState(false);
   const [time, setTime]       = useState(0);
   const [dur,  setDur]        = useState(0);
   const [pct,  setPct]        = useState(0);
@@ -320,6 +321,12 @@ function VideoPlayer({ src }) {
     const v = vidRef.current;
     if (!v) return;
     v.paused ? v.play() : v.pause();
+  }
+  function toggleMute() {
+    const v = vidRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
   }
   function fmtTime(s) { const m = Math.floor(s / 60); return m + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
   function onTimeUpdate() {
@@ -340,7 +347,6 @@ function VideoPlayer({ src }) {
           ref={vidRef}
           className="vid-el"
           playsInline
-          muted
           preload="metadata"
           onTimeUpdate={onTimeUpdate}
           onLoadedMetadata={onTimeUpdate}
@@ -363,6 +369,9 @@ function VideoPlayer({ src }) {
             <i className={`fa ${playing ? 'fa-pause' : 'fa-play'}`} />
           </button>
           <span className="vid-time">{fmtTime(time)} / {fmtTime(dur)}</span>
+          <button className="vid-btn" onClick={e => { e.stopPropagation(); toggleMute(); }} title={muted ? 'Unmute' : 'Mute'}>
+            <i className={`fa ${muted ? 'fa-volume-xmark' : 'fa-volume-high'}`} />
+          </button>
         </div>
       </div>
     </div>

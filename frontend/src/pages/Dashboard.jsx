@@ -44,8 +44,9 @@ const WMO = {
 const WMO_ICO = {
   0:'fa-sun', 1:'fa-cloud-sun', 2:'fa-cloud', 3:'fa-cloud',
   45:'fa-smog', 48:'fa-smog',
-  51:'fa-cloud-drizzle', 53:'fa-cloud-drizzle', 55:'fa-cloud-drizzle',
+  51:'fa-cloud-rain', 53:'fa-cloud-rain', 55:'fa-cloud-rain',
   61:'fa-cloud-rain', 63:'fa-cloud-rain', 65:'fa-cloud-showers-heavy',
+  71:'fa-snowflake', 73:'fa-snowflake', 75:'fa-snowflake',
   80:'fa-cloud-showers-heavy', 81:'fa-cloud-showers-heavy', 82:'fa-cloud-showers-heavy',
   95:'fa-cloud-bolt', 96:'fa-cloud-bolt', 99:'fa-cloud-bolt',
 };
@@ -372,14 +373,20 @@ export default function Dashboard() {
 
 
       <div className="metric-strip">
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': getValue('temp_dht') != null ? `${Math.min(100, getValue('temp_dht') / 50 * 100)}%` : '0%',
+          '--bar-color': getValue('temp_dht') >= 35 ? '#f59e0b' : 'var(--blue)',
+        }}>
           <i className="fa fa-temperature-half metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Suhu Udara</span>
             <span className="metric-value">{getValue('temp_dht') != null ? `${getValue('temp_dht')}°C` : '--°C'}</span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': humVal != null ? `${humVal}%` : '0%',
+          '--bar-color': humColor(humVal) || 'var(--blue)',
+        }}>
           <i className="fa fa-droplet metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Kelembaban</span>
@@ -388,14 +395,20 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': getValue('temp_ds') != null ? `${Math.min(100, getValue('temp_ds') / 50 * 100)}%` : '0%',
+          '--bar-color': getValue('temp_ds') >= 35 ? '#f59e0b' : 'var(--blue)',
+        }}>
           <i className="fa fa-water metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Suhu Air</span>
             <span className="metric-value">{getValue('temp_ds') != null ? `${getValue('temp_ds')}°C` : '--°C'}</span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': getValue('relay') ? '100%' : '0%',
+          '--bar-color': relayOn ? '#22c55e' : '#ef4444',
+        }}>
           <i className={`fa fa-plug metric-ico`} style={{ color: relayOn ? '#22c55e' : undefined }} />
           <div className="metric-body">
             <span className="metric-label">Status Pompa</span>
@@ -404,7 +417,10 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': getValue('mode') ? '100%' : '0%',
+          '--bar-color': modeIsAuto ? '#22c55e' : '#3b82f6',
+        }}>
           <i className="fa fa-sliders metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Mode Sistem</span>
@@ -424,14 +440,20 @@ export default function Dashboard() {
             <span className="metric-value">{weather ? (WMO[weather.weather_code] ?? 'Tidak Diketahui') : '--'}</span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': weather ? `${Math.min(100, Math.round(weather.temperature_2m) / 45 * 100)}%` : '0%',
+          '--bar-color': weather?.temperature_2m >= 35 ? '#f59e0b' : 'var(--blue)',
+        }}>
           <i className="fa fa-sun metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Suhu Luar</span>
             <span className="metric-value">{weather ? `${Math.round(weather.temperature_2m)}°C` : '--°C'}</span>
           </div>
         </div>
-        <div className="metric-item">
+        <div className="metric-item" style={{
+          '--bar-pct': weather ? `${rainProb}%` : '0%',
+          '--bar-color': rainProb >= 60 ? '#3b82f6' : rainProb >= 30 ? '#f59e0b' : 'var(--blue)',
+        }}>
           <i className="fa fa-umbrella metric-ico" />
           <div className="metric-body">
             <span className="metric-label">Peluang Hujan</span>
