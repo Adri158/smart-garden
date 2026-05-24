@@ -92,7 +92,7 @@ smart-garden/
 
 ## Cara ngejalaninnya
 
-> **Catatan:** Proyek ini butuh setup infrastruktur lengkap sebelum bisa jalan — Apache, MariaDB, Mosquitto, Node.js, PHP, dan pm2 harus diinstall dulu di server. Hardware ESP32 juga harus ada dan di-flash firmwarenya.
+> **Catatan:** Projek ini butuh setup infrastruktur lengkap sebelum bisa jalan, Apache, MariaDB, Mosquitto, Node.js, PHP, dan pm2 harus diinstall dulu di server. Hardware ESP32 juga harus ada dan di-flash firmwarenya, jika ingin kode sketch esp32 nya, ditunggu aja yah.
 
 ### Panduan Syntax (untuk yang baru)
 
@@ -109,7 +109,7 @@ Semua perintah di bawah dijalankan di **Terminal** (Command Prompt / PowerShell 
 | `php artisan ...` | perintah bawaan Laravel |
 | `pm2 startOrReload ...` | jalanin/reload proses Node.js di background |
 
-> File `.env` berisi konfigurasi rahasia (password DB, API key, dll) — **jangan di-share atau di-upload ke GitHub**.
+> File `.env` berisi konfigurasi rahasia (password DB, API key, dll) — **jangan di-share atau di-upload ke GitHub nya yah**.
 
 ---
 
@@ -193,4 +193,4 @@ php artisan serve
 
 ## License
 
-[Apache 2.0](LICENSE) © 2025 Kelompok 6
+[Apache 2.0](LICENSE) © 2026 Kelompok 6
