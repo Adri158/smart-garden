@@ -1,0 +1,66 @@
+# ── Environment & secrets ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!**/.env.example
+backend/.env
+frontend/.env
+laravel/.env
+laravel/.env.backup
+
+# ── Dependencies ───────────────────────────────────────────────────────────────
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+vendor/
+laravel/vendor/
+
+# ── Build output ───────────────────────────────────────────────────────────────
+frontend/dist/
+laravel/storage/logs/
+laravel/storage/framework/cache/
+laravel/storage/framework/sessions/
+laravel/storage/framework/views/
+laravel/bootstrap/cache/
+
+# ── Media & dokumentasi (foto, video anggota) ──────────────────────────────────
+frontend/public/video/
+frontend/public/img/docs/
+frontend/public/img/anggota/
+video/
+img/docs/
+img/anggota/
+*.mp4
+*.mov
+*.avi
+*.mkv
+WhatsApp*
+
+# ── Database ───────────────────────────────────────────────────────────────────
+*.sqlite
+*.db
+# Exclude SQL dumps tapi bukan schema
+*.dump.sql
+smartgarden.sql
+
+# ── Firmware binaries ──────────────────────────────────────────────────────────
+firmware/*.bin
+
+# ── Backup ────────────────────────────────────────────────────────────────────
+backup/
+
+# ── Bruno (API client) ────────────────────────────────────────────────────────
+bruno/
+
+# ── Claude / AI tooling ───────────────────────────────────────────────────────
+CLAUDE.md
+.claude/
+
+# ── OS & editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+efsf

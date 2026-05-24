@@ -1,0 +1,117 @@
+/* Sistem page styles — matches sistem.php inline CSS exactly */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.sis-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+/* Header */
+.sis-head { margin-bottom: 40px; }
+.sis-eyebrow {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 8px;
+}
+.sis-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 48px; font-weight: 400; color: var(--text); line-height: 1;
+  letter-spacing: 3px; margin-bottom: 12px;
+}
+.sis-status-row {
+  display: flex; align-items: center; gap: 8px;
+  font-family: "Space Mono", monospace; font-size: 11px; color: var(--muted);
+}
+.sis-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px #22c55e;
+  transition: background .3s, box-shadow .3s; flex-shrink: 0;
+}
+.sis-dot.offline { background: var(--red); box-shadow: 0 0 8px #ef4444; }
+
+/* Stats Strip */
+.sis-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+@media (max-width: 640px) {
+  .sis-stats { grid-template-columns: repeat(2, 1fr); }
+}
+.sis-stat {
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.sis-stat:last-child { border-right: none; }
+@media (max-width: 640px) {
+  .sis-stat:nth-child(2) { border-right: none; }
+  .sis-stat:nth-child(3) { border-top: 1px solid var(--border); }
+  .sis-stat:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+}
+
+.sis-stat-label {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); display: flex; align-items: center; gap: 6px;
+}
+.sis-stat-label i { color: var(--blue); font-size: 10px; }
+
+.sis-stat-val {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 52px; font-weight: 400; line-height: 1;
+  color: var(--text); letter-spacing: 2px;
+}
+.sis-stat-val .unit {
+  font-size: 16px; font-weight: 600; color: var(--muted); margin-left: 1px;
+}
+
+.sis-bar-track {
+  height: 3px; background: var(--raise); border-radius: 2px; overflow: hidden;
+}
+.sis-bar-fill {
+  height: 100%; width: 0%; border-radius: 2px;
+  background: var(--blue);
+  transition: width .7s ease, background .4s;
+}
+.sis-bar-fill.warn   { background: #f59e0b; }
+.sis-bar-fill.danger { background: var(--red); }
+
+.sis-stat-sub {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; color: var(--muted);
+}
+
+/* Info Table */
+.sis-info-head {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sis-info-head::after {
+  content: ""; flex: 1; height: 1px; background: var(--border);
+}
+.sis-table {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.sis-row {
+  background: var(--surface);
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 16px; gap: 24px;
+}
+.sis-key {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; color: var(--muted); flex-shrink: 0; white-space: nowrap;
+}
+.sis-val {
+  font-family: "Space Mono", monospace;
+  font-size: 10px; font-weight: 700; color: var(--text);
+  text-align: right; word-break: break-word;
+}
