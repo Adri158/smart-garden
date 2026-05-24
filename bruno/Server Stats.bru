@@ -1,0 +1,39 @@
+meta {
+  name: Server Stats (API)
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{apiUrl}}/api/server/stats
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns live server metrics: CPU percent, memory, disk, uptime, load average.
+  Reads directly from /proc/stat, /proc/meminfo, /proc/uptime.
+  No auth required (read-only).
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("has cpu.percent", function() {
+    expect(res.getBody().data.cpu.percent).to.be.a('number');
+  });
+  test("has memory.percent", function() {
+    expect(res.getBody().data.memory.percent).to.be.a('number');
+  });
+  test("has disk.percent", function() {
+    expect(res.getBody().data.disk.percent).to.be.a('number');
+  });
+  test("has uptime.seconds", function() {
+    expect(res.getBody().data.uptime.seconds).to.be.a('number');
+  });
+}

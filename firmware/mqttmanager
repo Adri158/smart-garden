@@ -1,0 +1,203 @@
+package com.example.smartgarden
+
+import android.content.Context
+import android.util.Log
+import info.mqtt.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttActionListener
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.IMqttToken
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended
+import org.eclipse.paho.client.mqttv3.MqttClient
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttException
+import org.eclipse.paho.client.mqttv3.MqttMessage
+
+class MqttManager(context: Context) {
+
+    companion object {
+        private const val TAG = "MQTT"
+    }
+
+    private val serverUri = "wss://mqtt.kelompok6.my.id"
+
+    private val clientId = MqttClient.generateClientId()
+
+    private val client = MqttAndroidClient(context, serverUri, clientId)
+
+    var isConnected = false
+        private set
+
+    private val subscriptions = mutableMapOf<String, (String) -> Unit>()
+
+    init {
+
+        client.setCallback(object : MqttCallbackExtended {
+
+            override fun connectComplete(reconnect: Boolean, serverURI: String?) {
+
+                Log.d(TAG, "MQTT CONNECT COMPLETE")
+
+                isConnected = true
+
+                // subscribe ulang setelah reconnect
+                subscriptions.forEach { (topic, _) ->
+
+                    try {
+
+                        client.subscribe(topic, 1)
+
+                        Log.d(TAG, "Resubscribed to $topic")
+
+                    } catch (e: Exception) {
+
+                        Log.e(TAG, "Resubscribe failed", e)
+                    }
+                }
+            }
+
+            override fun connectionLost(cause: Throwable?) {
+
+                Log.e(TAG, "Connection lost", cause)
+
+                isConnected = false
+            }
+
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+
+                val payload = message?.toString() ?: return
+
+                Log.d(TAG, "MESSAGE [$topic]: $payload")
+
+                topic?.let {
+
+                    subscriptions[it]?.invoke(payload)
+                }
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+
+                Log.d(TAG, "Delivery complete")
+            }
+        })
+    }
+
+    /* ================= CONNECT ================= */
+
+    fun connect(
+        onSuccess: () -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) {
+
+        val options = MqttConnectOptions()
+
+        options.isAutomaticReconnect = true
+        options.isCleanSession = true
+        options.connectionTimeout = 10
+        options.keepAliveInterval = 20
+
+        try {
+
+            Log.d(TAG, "MQTT CONNECTING...")
+
+            client.connect(options, null, object : IMqttActionListener {
+
+                override fun onSuccess(asyncActionToken: IMqttToken?) {
+
+                    Log.d(TAG, "MQTT CONNECTED")
+
+                    isConnected = true
+
+                    onSuccess()
+                }
+
+                override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+
+                    Log.e(TAG, "MQTT CONNECTION FAILED", exception)
+
+                    isConnected = false
+
+                    onFailure(exception ?: Exception("Unknown error"))
+                }
+            })
+
+        } catch (e: MqttException) {
+
+            Log.e(TAG, "MQTT ERROR", e)
+
+            onFailure(e)
+        }
+    }
+
+    /* ================= SUBSCRIBE ================= */
+
+    fun subscribe(topic: String, onMessage: (String) -> Unit) {
+
+        subscriptions[topic] = onMessage
+
+        if (!isConnected) {
+
+            Log.d(TAG, "Queued subscription: $topic")
+
+            return
+        }
+
+        try {
+
+            client.subscribe(topic, 1)
+
+            Log.d(TAG, "SUBSCRIBED: $topic")
+
+        } catch (e: MqttException) {
+
+            Log.e(TAG, "Subscribe error", e)
+        }
+    }
+
+    /* ================= PUBLISH ================= */
+
+    fun publish(topic: String, message: String) {
+
+        if (!isConnected) {
+
+            Log.e(TAG, "Publish failed, not connected")
+
+            return
+        }
+
+        try {
+
+            val mqttMessage = MqttMessage(message.toByteArray())
+
+            mqttMessage.qos = 1
+
+            client.publish(topic, mqttMessage)
+
+            Log.d(TAG, "PUBLISH [$topic]: $message")
+
+        } catch (e: MqttException) {
+
+            Log.e(TAG, "Publish failed", e)
+        }
+    }
+
+    /* ================= DISCONNECT ================= */
+
+    fun disconnect() {
+
+        try {
+
+            if (isConnected) {
+
+                client.disconnect()
+
+                isConnected = false
+
+                Log.d(TAG, "MQTT DISCONNECTED")
+            }
+
+        } catch (e: MqttException) {
+
+            Log.e(TAG, "Disconnect error", e)
+        }
+    }
+}

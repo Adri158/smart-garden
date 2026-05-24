@@ -1,0 +1,41 @@
+meta {
+  name: Device Settings PUT
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{apiUrl}}/api/devices/{{deviceId}}/settings
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  X-API-Key: {{apiKey}}
+}
+
+body:json {
+  {
+    "soil_min": "30",
+    "soil_max": "80",
+    "temp_max": "35",
+    "hum_min": "40",
+    "publish_interval": "5"
+  }
+}
+
+docs {
+  Upserts per-device setting overrides.
+  Allowed keys: soil_min, soil_max, temp_max, hum_min, publish_interval.
+  Requires X-API-Key header.
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("updated array returned", function() {
+    expect(res.getBody().data.updated).to.be.an('array');
+  });
+}

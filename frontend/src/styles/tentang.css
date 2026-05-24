@@ -1,0 +1,139 @@
+.tentang-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── HEADER ── */
+.t-header { margin-bottom: 48px; }
+
+.t-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.25);
+  color: var(--blue); font-size: 10px; font-family: 'Space Mono', monospace;
+  font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+}
+
+.t-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 5vw, 42px); font-weight: 800;
+  color: var(--text); margin-bottom: 10px; line-height: 1.1;
+}
+
+.t-desc {
+  color: var(--muted); font-size: 14px; line-height: 1.7;
+  max-width: 520px; margin-bottom: 24px;
+}
+.t-desc strong { color: var(--text); }
+
+.t-stats {
+  display: inline-flex; align-items: center;
+  background: var(--raise); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.t-stat {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 24px; gap: 2px;
+}
+.t-stat-num {
+  font-family: 'Space Mono', monospace; font-size: 20px;
+  font-weight: 700; color: var(--blue);
+}
+.t-stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.t-stat-div { width: 1px; height: 32px; background: var(--border); }
+
+/* ── SECTION LABEL ── */
+.t-section-label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0; padding-bottom: 0;
+}
+.t-section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.t-section-label i { color: var(--blue); }
+
+/* ── ROSTER ── */
+.t-roster {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.t-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 4px;
+  border-top: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.t-row:hover { background: var(--raise); margin: 0 -8px; padding: 12px 12px; border-radius: 8px; border-top-color: transparent; }
+.t-row:hover + .t-row { border-top-color: transparent; }
+
+.t-num {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  font-weight: 700; color: var(--faint-text); width: 24px; flex-shrink: 0; text-align: right;
+}
+
+.t-avatar {
+  width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  background: var(--raise); border: 1px solid var(--border); flex-shrink: 0;
+}
+.t-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.t-avatar-fallback {
+  width: 100%; height: 100%; display: none;
+  align-items: center; justify-content: center;
+  font-size: 15px; color: var(--muted);
+}
+
+.t-info { flex: 1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
+
+.t-name {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  white-space: nowrap; flex-shrink: 0;
+}
+
+.t-roles { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.t-role {
+  font-size: 9px; font-family: 'Space Mono', monospace;
+  font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 4px;
+  background: var(--raise); color: var(--muted); border: 1px solid var(--border);
+}
+.t-role-Hardware    { background: rgba(245,158,11,0.1);  color: #f59e0b; border-color: rgba(245,158,11,0.25); }
+.t-role-Software    { background: rgba(59,130,246,0.1);  color: #3b82f6; border-color: rgba(59,130,246,0.25); }
+.t-role-Frontend    { background: rgba(6,182,212,0.1);   color: #06b6d4; border-color: rgba(6,182,212,0.25); }
+.t-role-Backend     { background: rgba(168,85,247,0.1);  color: #a855f7; border-color: rgba(168,85,247,0.25); }
+.t-role-Testing     { background: rgba(34,197,94,0.1);   color: #22c55e; border-color: rgba(34,197,94,0.25); }
+.t-role-Dokumentasi { background: rgba(244,114,182,0.1); color: #f472b6; border-color: rgba(244,114,182,0.25); }
+
+/* ── TEACHERS ── */
+.t-teachers { display: flex; flex-direction: column; }
+
+.t-teacher-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 4px; border-top: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.t-teacher-row:hover { background: var(--raise); margin: 0 -8px; padding: 12px 12px; border-radius: 8px; border-top-color: transparent; }
+
+.t-teacher-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--raise); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--blue); flex-shrink: 0;
+}
+.t-teacher-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.t-teacher-role {
+  font-size: 10px; font-family: 'Space Mono', monospace;
+  color: var(--muted); letter-spacing: 0.5px;
+}
+.t-teachers-bottom { border-bottom: 1px solid var(--border); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .tentang-wrap { padding: 24px 16px 48px; }
+  .t-stat { padding: 10px 16px; }
+  .t-name { font-size: 12px; }
+}

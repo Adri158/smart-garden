@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#06080f"/>
+  <!-- stem -->
+  <rect x="248" y="260" width="16" height="140" rx="8" fill="#22c55e"/>
+  <!-- main leaf -->
+  <path d="M256 260 C256 260 170 220 160 140 C160 140 240 130 270 200 C270 200 300 130 360 140 C360 220 256 260 256 260Z" fill="#22c55e" opacity="0.9"/>
+  <!-- left small leaf -->
+  <path d="M248 310 C248 310 200 295 190 255 C190 255 235 248 248 285Z" fill="#22c55e" opacity="0.7"/>
+  <!-- right small leaf -->
+  <path d="M264 330 C264 330 310 310 325 268 C325 268 278 265 264 300Z" fill="#22c55e" opacity="0.7"/>
+  <!-- blue glow dot -->
+  <circle cx="256" cy="192" r="12" fill="#3b82f6" opacity="0.8"/>
+  <!-- soil base -->
+  <rect x="210" y="395" width="92" height="20" rx="10" fill="#3b82f6" opacity="0.4"/>
+</svg>

@@ -1,0 +1,37 @@
+package com.example.smartgarden
+
+data class DashboardState(
+
+    /* ================= CONNECTION ================= */
+
+    val espOnline: Boolean = false,
+
+    /* ================= SENSOR DATA ================= */
+
+    val tempAir: String = "-- °C",
+    val humidity: String = "-- %",
+    val tempWater: String = "-- °C",
+
+    val soil: Int = 0,
+
+    /* ================= DEVICE STATUS ================= */
+
+    val relayOn: Boolean = false,
+    val modeAuto: Boolean = false,
+
+    /* ================= TERMINAL ================= */
+
+    val logs: List<String> = emptyList()
+
+) {
+
+    /* ================= SAFE LOG UPDATE ================= */
+
+    fun addLog(message: String): DashboardState {
+
+        return copy(
+            logs = (logs + message).takeLast(50)
+        )
+    }
+
+}

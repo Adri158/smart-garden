@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Import shared PHP CSS — single source of truth for design tokens */
+@import "./styles/global.css";
+
+/* React-specific overrides: global.css sets overflow:hidden on body
+   which breaks page scrolling in the SPA layout */
+body {
+  overflow: auto;
+}
+
+/* #root must fill the viewport height */
+#root {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Alias variables used by legacy React components */
+:root {
+  --bg-card:       var(--surface);
+  --bg-card-hover: var(--raise);
+  --text-muted:    var(--muted);
+  --blue-dark:     #2563eb;
+}

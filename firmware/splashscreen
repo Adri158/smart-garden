@@ -1,0 +1,347 @@
+@file:OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+
+package com.example.smartgarden
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
+import kotlin.math.*
+
+@RequiresApi(Build.VERSION_CODES.N)
+@Composable
+fun SplashScreen(
+    onConnected: (MqttManager) -> Unit
+) {
+
+    val context = LocalContext.current
+    val mqttManager = remember { MqttManager(context) }
+
+    var connectionState by remember {
+        mutableStateOf<ConnectionState>(ConnectionState.Connecting)
+    }
+
+    var progress by remember { mutableFloatStateOf(0f) }
+
+    var bootText by remember {
+        mutableStateOf("Booting core system...")
+    }
+
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = tween(800, easing = FastOutSlowInEasing),
+        label = ""
+    )
+
+    val bootMessages = listOf(
+        "Booting core system...",
+        "Initializing sensors...",
+        "Connecting MQTT broker...",
+        "Syncing device nodes...",
+        "System ready"
+    )
+
+    /* ================= BOOT ================= */
+
+    LaunchedEffect(Unit) {
+
+        bootText = bootMessages[0]
+        progress = 0.15f
+        delay(700)
+
+        bootText = bootMessages[1]
+        progress = 0.35f
+        delay(700)
+
+        bootText = bootMessages[2]
+        progress = 0.50f
+
+        val result = withTimeoutOrNull(20000) {
+
+            suspendCancellableCoroutine<Boolean> { cont ->
+
+                mqttManager.connect(
+
+                    onSuccess = {
+                        if (cont.isActive) cont.resume(true)
+                    },
+
+                    onFailure = {
+                        if (cont.isActive) cont.resume(false)
+                    }
+                )
+            }
+        }
+
+        if (result == true) {
+
+            bootText = bootMessages[3]
+            progress = 0.75f
+            delay(600)
+
+            bootText = bootMessages[4]
+            progress = 1f
+            delay(500)
+
+            connectionState = ConnectionState.Success
+
+            onConnected(mqttManager)
+
+        } else {
+
+            connectionState = ConnectionState.Failed
+        }
+    }
+
+    /* ================= UI ================= */
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF040915))
+    ) {
+
+        ParticleDepth()
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            RadarCore()
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Text(
+                "SMART GARDEN",
+                color = Color.White,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 4.sp
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            AnimatedContent(
+                targetState = bootText,
+                transitionSpec = {
+                    (slideInVertically { it } + fadeIn())
+                        .togetherWith(slideOutVertically { -it } + fadeOut())
+                },
+                label = ""
+            ) { text ->
+
+                Text(
+                    text = text,
+                    color = Color(0xFF94A3B8),
+                    fontSize = 13.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            GlowProgress(animatedProgress)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            if (connectionState is ConnectionState.Failed) {
+
+                Text("Connection Failed", color = Color.Red)
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(
+                    onClick = {
+                        connectionState = ConnectionState.Connecting
+                    }
+                ) {
+                    Text("Retry")
+                }
+            }
+        }
+    }
+}
+
+/* ================= CONNECTION STATE ================= */
+
+sealed class ConnectionState {
+    object Connecting : ConnectionState()
+    object Success : ConnectionState()
+    object Failed : ConnectionState()
+}
+
+/* ================= GLOW PROGRESS ================= */
+
+@Composable
+fun GlowProgress(progress: Float) {
+
+    Box(
+        modifier = Modifier
+            .width(260.dp)
+            .height(8.dp)
+            .background(
+                Color.White.copy(alpha = 0.08f),
+                shape = CircleShape
+            )
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(progress)
+                .background(
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color(0xFF60A5FA),
+                            Color(0xFF3B82F6)
+                        )
+                    ),
+                    shape = CircleShape
+                )
+        )
+    }
+}
+
+/* ================= RADAR CORE ================= */
+
+@Composable
+fun RadarCore() {
+
+    val infinite = rememberInfiniteTransition(label = "")
+
+    val radarRotation by infinite.animateFloat(
+        0f,
+        360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2500, easing = LinearEasing)
+        ),
+        label = ""
+    )
+
+    val ringRotation by infinite.animateFloat(
+        0f,
+        360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(8000, easing = LinearEasing)
+        ),
+        label = ""
+    )
+
+    Box(
+        modifier = Modifier.size(200.dp),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Canvas(
+            modifier = Modifier
+                .size(220.dp)
+                .graphicsLayer(rotationZ = ringRotation)
+        ) {
+
+            drawCircle(
+                color = Color(0x553B82F6),
+                style = Stroke(width = 2f)
+            )
+        }
+
+        Canvas(
+            modifier = Modifier
+                .size(180.dp)
+                .graphicsLayer(rotationZ = radarRotation)
+        ) {
+
+            drawArc(
+                brush = Brush.sweepGradient(
+                    listOf(
+                        Color(0x663B82F6),
+                        Color.Transparent
+                    )
+                ),
+                startAngle = 0f,
+                sweepAngle = 160f,
+                useCenter = true
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .size(160.dp)
+                .background(
+                    brush = Brush.radialGradient(
+                        listOf(
+                            Color(0xFF60A5FA),
+                            Color(0xFF1E3A8A)
+                        )
+                    ),
+                    shape = CircleShape
+                )
+        )
+    }
+}
+
+/* ================= PARTICLE DEPTH ================= */
+
+@Composable
+fun ParticleDepth() {
+
+    val infinite = rememberInfiniteTransition(label = "")
+
+    val anim by infinite.animateFloat(
+        0f,
+        1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(9000, easing = LinearEasing)
+        ),
+        label = ""
+    )
+
+    Canvas(modifier = Modifier.fillMaxSize()) {
+
+        val layers = listOf(15, 25, 35)
+
+        layers.forEachIndexed { layer, count ->
+
+            val speed = (layer + 1) * 0.4f
+
+            repeat(count) { i ->
+
+                val x =
+                    (size.width * i / count + anim * size.width * speed) % size.width
+
+                val y =
+                    size.height * abs(
+                        sin(i * 0.8f + anim * 6f)
+                    )
+
+                drawCircle(
+                    color = Color(0xFF3B82F6),
+                    radius = (layer + 1) * 1.5f,
+                    center = Offset(x, y),
+                    alpha = 0.5f
+                )
+            }
+        }
+    }
+}

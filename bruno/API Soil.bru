@@ -1,0 +1,24 @@
+meta {
+  name: API Soil (last 50 readings)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{apiUrl}}/api/soil
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("returns array", function() {
+    expect(res.getBody()).to.be.an('array');
+  });
+}

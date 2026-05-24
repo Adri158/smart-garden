@@ -1,0 +1,32 @@
+meta {
+  name: Sensor Log (POST)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/sensor_log.php
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "device_id": "{{deviceId}}",
+    "soil": 45,
+    "temp_dht": 28.5,
+    "temp_ds": 25.1,
+    "humidity": 60,
+    "relay": 0,
+    "mode": "AUTO"
+  }
+}
+
+docs {
+  Browser pakai endpoint ini untuk log sensor reading tiap 60s.
+  device_id wajib; field lain nullable.
+}

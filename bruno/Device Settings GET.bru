@@ -1,0 +1,32 @@
+meta {
+  name: Device Settings GET
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{apiUrl}}/api/devices/{{deviceId}}/settings
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Returns merged settings: global defaults overlaid with per-device overrides.
+  Mirrors PHP getDeviceSettings() behavior.
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("has soil_min", function() {
+    expect(res.getBody().data).to.have.property('soil_min');
+  });
+  test("has soil_max", function() {
+    expect(res.getBody().data).to.have.property('soil_max');
+  });
+}

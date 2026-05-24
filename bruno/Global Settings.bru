@@ -1,0 +1,24 @@
+meta {
+  name: Global Settings
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{apiUrl}}/api/settings
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("has soil_min key", function() {
+    expect(res.getBody().data).to.have.property('soil_min');
+  });
+}

@@ -1,0 +1,46 @@
+meta {
+  name: Device Sensors History (API)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{apiUrl}}/api/devices/{{deviceId}}/sensors
+  body: none
+  auth: none
+}
+
+params:query {
+  sensor: soil
+  range: 1h
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  sensor: soil | temp_dht | temp_ds | humidity
+  range:  1h | 6h | 24h | 1w | 1m
+
+  Returns bucketed averages identical to sensor_history.php,
+  plus stats (min/max/avg) for the selected range.
+}
+
+tests {
+  test("status 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("has labels and values arrays", function() {
+    const body = res.getBody();
+    expect(body.data.labels).to.be.an('array');
+    expect(body.data.values).to.be.an('array');
+  });
+  test("labels and values same length", function() {
+    const d = res.getBody().data;
+    expect(d.labels.length).to.equal(d.values.length);
+  });
+  test("has stats object", function() {
+    expect(res.getBody().data.stats).to.be.an('object');
+  });
+}

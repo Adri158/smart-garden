@@ -1,0 +1,107 @@
+package com.example.smartgarden
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.*
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+
+            var mqttManager by remember { mutableStateOf<MqttManager?>(null) }
+            var showSplash by remember { mutableStateOf(true) }
+            var state by remember { mutableStateOf(DashboardState()) }
+
+            if (showSplash) {
+
+                SplashScreen(
+                    onConnected = { manager ->
+                        mqttManager = manager
+                        showSplash = false
+                    }
+                )
+
+            } else {
+
+                mqttManager?.let { manager ->
+
+                    LaunchedEffect(Unit) {
+
+                        state = state.copy(espOnline = true)
+
+                        manager.subscribe("smartgarden/sensor/dht") {
+                            state = state.copy(
+                                tempAir = "$it °C"
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/sensor/hum") {
+                            state = state.copy(
+                                humidity = "$it %"
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/sensor/ds18b20") {
+                            state = state.copy(
+                                tempWater = "$it °C"
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/sensor/soil") {
+                            state = state.copy(
+                                soil = it.toIntOrNull() ?: 0
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/status/relay") {
+                            state = state.copy(
+                                relayOn = it == "ON"
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/status/mode") {
+                            state = state.copy(
+                                modeAuto = it == "AUTO"
+                            )
+                        }
+
+                        manager.subscribe("smartgarden/terminal/output") {
+                            state = state.copy(
+                                logs = (state.logs + it).takeLast(50)
+                            )
+                        }
+                    }
+
+                    DashboardScreen(
+                        state = state,
+
+                        onPumpClick = {
+                            manager.publish(
+                                "smartgarden/control/relay",
+                                if (state.relayOn) "OFF" else "ON"
+                            )
+                        },
+
+                        onModeClick = {
+                            manager.publish(
+                                "smartgarden/control/mode",
+                                if (state.modeAuto) "MANUAL" else "AUTO"
+                            )
+                        },
+
+                        onSendCommand = {
+                            manager.publish(
+                                "smartgarden/terminal/input",
+                                it
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
