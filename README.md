@@ -344,9 +344,15 @@ sudo systemctl status cloudflared
 
 ## Thanks to
 
-| No | Nama |
+| No | Untuk |
 |----|------|
 | 1 | Untung Adriansyah |
+| 1 | Adriansyah |
+| 1 | Rin |
+| 1 | Riyotaka |
+| 1 | Me |
+| 1 | Im |
+| 1 | My Brain |
 
 ---
 
