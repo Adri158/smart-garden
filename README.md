@@ -382,6 +382,49 @@ Kalau projek ini berguna buat kamu, atau sekadar pengen support — bantuan keci
 
 ---
 
-## License
+## ⚖️ Lisensi
 
-[Apache 2.0](LICENSE) © 2026 Kelompok 6
+<div align="center">
+
+[![License](https://img.shields.io/badge/Apache%202.0-Open%20Source-4ade80?style=for-the-badge&logo=apache&logoColor=white)](LICENSE)
+
+</div>
+
+<details>
+<summary><b>🔍 Klik untuk lihat hak &amp; ketentuan lengkap</b></summary>
+
+<br>
+
+**✅ Boleh:**
+
+![](https://img.shields.io/badge/✅_Penggunaan_Komersial-diizinkan-4ade80?style=flat-square)
+![](https://img.shields.io/badge/✅_Modifikasi_Bebas-diizinkan-4ade80?style=flat-square)
+![](https://img.shields.io/badge/✅_Distribusi_Ulang-diizinkan-4ade80?style=flat-square)
+![](https://img.shields.io/badge/✅_Penggunaan_Private-diizinkan-4ade80?style=flat-square)
+![](https://img.shields.io/badge/✅_Pakai_Patent-diizinkan-4ade80?style=flat-square)
+
+**⚠️ Harus:**
+
+![](https://img.shields.io/badge/⚠️_Sertakan_License_Notice-wajib-f59e0b?style=flat-square)
+![](https://img.shields.io/badge/⚠️_Cantumkan_Perubahan-wajib-f59e0b?style=flat-square)
+![](https://img.shields.io/badge/⚠️_Sertakan_Copyright-wajib-f59e0b?style=flat-square)
+
+**❌ Tidak boleh:**
+
+![](https://img.shields.io/badge/❌_Klaim_Trademark-dilarang-ef4444?style=flat-square)
+![](https://img.shields.io/badge/❌_Tuntut_Liability-dilarang-ef4444?style=flat-square)
+
+<br>
+
+> Singkatnya: bebas pakai, modif, dan distribusikan — asal tetap cantumkan lisensi aslinya.  
+> Detail lengkap di file [`LICENSE`](LICENSE).
+
+</details>
+
+<br>
+
+<div align="center">
+
+*Copyright © 2026 **Kelompok 6** — dibuat dengan ☕ + 🎧 + ESP32*
+
+</div>
